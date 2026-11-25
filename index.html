@@ -1202,9 +1202,31 @@ window.HELP = {
 };
 window.CHECKED = "Checked Oct 16, 2026";
 window.NAV = {
+  videos: [],
   lines: [
-    { id: "work", code: "W", name: "Work & Employment" },
-    { id: "income", code: "I", name: "Income & Disability Supports" },
+    {
+      id: "work",
+      code: "W",
+      name: "Work & Employment",
+      subs: [
+        { id: "rights", name: "Workplace rights and responsibilities" },
+        { id: "docs", name: "Medical documentation" },
+        { id: "leave", name: "Leave and job protection" },
+        { id: "find", name: "Finding or changing work" },
+      ],
+    },
+    {
+      id: "income",
+      code: "I",
+      name: "Income & Disability Supports",
+      subs: [
+        { id: "options", name: "Understanding your options" },
+        { id: "federal", name: "Federal supports" },
+        { id: "prov", name: "Provincial & territorial supports" },
+        { id: "applying", name: "Applying & navigating supports" },
+        { id: "savings", name: "Disability savings" },
+      ],
+    },
     { id: "meds", code: "M", name: "Medication & Health-Related Costs" },
     { id: "other", code: "O", name: "Everyday Costs & Local Help" },
     { id: "appeal", code: "A", name: "Appeals & Complaints" },
@@ -1389,9 +1411,10 @@ window.NAV = {
   stops: [
     {
       line: "work",
+      sub: "rights",
       title: "Talking about your condition at work",
       why: "You decide what to share and when. Planning the conversation makes it easier to ask for what you need.",
-      ia: "Work & Employment > Talking about your condition at work",
+      ia: "Work & Employment > Workplace rights and responsibilities > Talking about your condition at work",
       when: function (e, t) {
         return t.need("work") || e.work === "ok" || e.work === "struggling";
       },
@@ -1406,9 +1429,10 @@ window.NAV = {
     },
     {
       line: "work",
+      sub: "rights",
       title: "Workplace accommodations",
       why: "Small changes, like flexible hours or different equipment, can help you keep working comfortably.",
-      ia: "Work & Employment > Workplace accommodations, Medical documentation",
+      ia: "Work & Employment > Workplace rights and responsibilities > Workplace accommodations",
       when: function (e, t) {
         return t.need("work") || e.work === "ok" || e.work === "struggling";
       },
@@ -1426,19 +1450,14 @@ window.NAV = {
           owner: "PsoCan",
           status: "REFRESH",
         },
-        {
-          label: "Asking your doctor for a medical note",
-          href: null,
-          owner: "PsoCan",
-          status: "REVIEW (link broken)",
-        },
       ],
     },
     {
       line: "work",
+      sub: "rights",
       title: "Managing your condition at work",
       why: "Practical ways to handle symptoms and set up your workspace.",
-      ia: "Work & Employment > Managing your condition at work",
+      ia: "Work & Employment > Workplace rights and responsibilities > Managing your condition at work",
       when: function (e, t) {
         return t.need("work") || e.work === "struggling";
       },
@@ -1453,6 +1472,7 @@ window.NAV = {
     },
     {
       line: "work",
+      sub: "leave",
       title: "Sick leave and job protection",
       why: function (e, t) {
         return (
@@ -1462,7 +1482,7 @@ window.NAV = {
             : ", so check your province's or territory's employment standards.")
         );
       },
-      ia: "Work & Employment > Leave & job protection",
+      ia: "Work & Employment > Leave and job protection",
       when: function (e, t) {
         return t.need("leave") || e.work === "leave";
       },
@@ -1477,9 +1497,10 @@ window.NAV = {
     },
     {
       line: "work",
+      sub: "find",
       title: "Finding work or changing careers",
       why: "Some employers are more supportive than others, and retraining can open up work that suits your health.",
-      ia: "Work & Employment > Finding work, Changing work or retraining",
+      ia: "Work & Employment > Finding or changing work",
       when: function (e, t) {
         return t.need("findwork") || e.work === "looking";
       },
@@ -1499,7 +1520,77 @@ window.NAV = {
       ],
     },
     {
+      line: "work",
+      sub: "docs",
+      id: "meddocs",
+      title: "Medical notes for work",
+      why: "Your employer can ask for information about what you can and can't do, and how long you'll need changes or time off. They usually don't need your diagnosis.",
+      more: "Ask your doctor to describe your limits and what would help, not your full medical history. Keep a copy of every note you give your employer, and ask how it will be kept private.",
+      ia: "Work & Employment > Medical documentation",
+      when: function (e, t) {
+        return (
+          t.need("work") ||
+          t.need("leave") ||
+          e.work === "struggling" ||
+          e.work === "leave"
+        );
+      },
+      links: [
+        {
+          label: "Asking your doctor for a medical note",
+          href: null,
+          owner: "PsoCan",
+          status: "REVIEW (link broken)",
+        },
+      ],
+    },
+    {
       line: "income",
+      sub: "options",
+      id: "options",
+      title: "Which income supports fit you",
+      why: "Federal programs, like EI and CPP Disability, are the same across Canada. Provincial and territorial programs are different in each place. Many people get help from more than one.",
+      more: "Some programs affect each other. CPP Disability can lower what a provincial program pays you, but most provinces don't count the Canada Disability Benefit. The Disability Tax Credit unlocks several other programs, so it's often the first step.",
+      ia: "Income & Disability Supports > Understanding your options",
+      when: function (e, t) {
+        return (
+          t.need("income") || e.work === "notworking" || e.work === "leave"
+        );
+      },
+      links: [
+        {
+          label: "Disability benefits on canada.ca",
+          href: "https://www.canada.ca/en/services/benefits/disability.html",
+          owner: "Federal",
+          status: "NEW CONTENT",
+        },
+      ],
+    },
+    {
+      line: "income",
+      sub: "applying",
+      id: "applying",
+      title: "Getting help with applications",
+      why: "Forms can be long, and it's okay to ask for help. Legal clinics and disability groups can help for free. You never need to pay anyone to apply for a government benefit.",
+      more: "Free help near you lists groups in your province or territory that help with forms and appeals. Before you apply has a short checklist of what to gather first. Both are further down this page.",
+      ia: "Income & Disability Supports > Applying & navigating supports",
+      when: function (e, t) {
+        return (
+          t.need("income") || e.work === "notworking" || e.work === "leave"
+        );
+      },
+      links: [
+        {
+          label: "Benefits Finder on canada.ca",
+          href: "https://www.canada.ca/en/services/benefits/finder.html",
+          owner: "Federal",
+          status: "NEW CONTENT",
+        },
+      ],
+    },
+    {
+      line: "income",
+      sub: "federal",
       id: "dtc",
       title: "Disability Tax Credit (DTC)",
       why: "Lowers the tax you pay. More importantly, it's the key that unlocks the RDSP, the Canada Disability Benefit and some provincial programs, so it's usually the first thing to apply for.",
@@ -1523,6 +1614,7 @@ window.NAV = {
     },
     {
       line: "income",
+      sub: "federal",
       id: "ei",
       title: "EI Sickness Benefits",
       why: "Can replace part of your pay for up to 26 weeks while you can't work because of illness. Apply as soon as you stop working.",
@@ -1546,6 +1638,7 @@ window.NAV = {
     },
     {
       line: "income",
+      sub: "federal",
       id: "cppd",
       title: "Canada Pension Plan Disability",
       why: "Monthly payments if a severe and long-term disability stops you from working regularly. You need recent CPP contributions.",
@@ -1566,6 +1659,7 @@ window.NAV = {
     },
     {
       line: "income",
+      sub: "federal",
       id: "cdb",
       title: "Canada Disability Benefit",
       why: "A monthly payment for adults aged 18–64 with a low income. You need the Disability Tax Credit first.",
@@ -1586,6 +1680,7 @@ window.NAV = {
     },
     {
       line: "income",
+      sub: "prov",
       id: "prov-income",
       title: function (e, t) {
         return "Disability income in " + t.prov.name;
@@ -1626,10 +1721,11 @@ window.NAV = {
     },
     {
       line: "income",
+      sub: "federal",
       id: "childdb",
       title: "Child Disability Benefit",
       why: "A tax-free monthly amount for families caring for a child under 18 who is approved for the Disability Tax Credit. It's paid with the Canada Child Benefit.",
-      ia: "Income & Disability Supports > Federal supports (Lucy's guide topics: what the DTC unlocks)",
+      ia: "Income & Disability Supports > Federal supports",
       when: function (e, t) {
         return t.need("child");
       },
@@ -1644,6 +1740,7 @@ window.NAV = {
     },
     {
       line: "income",
+      sub: "savings",
       id: "rdsp",
       title: "Saving for the future (RDSP)",
       why: "If you have the Disability Tax Credit, you can open a Registered Disability Savings Plan, and the government may add grants and bonds to it.",
@@ -2600,8 +2697,8 @@ function gf({ a11y: e, setA11y: t, review: n, setReview: r, onClose: i }) {
 }
 function vf({ onStart: e, onPersona: t, review: n, onBrowse: w }) {
   const TD = {
-    work: "Accommodations, sick leave, finding work",
-    income: "Tax credit, CPP Disability, provincial support",
+    work: "Your rights, medical notes, leave, finding work",
+    income: "Federal and provincial programs, applying, savings",
     meds: "Drug coverage, approvals, dental",
     other: "Rent, transit, equipment, outings",
     appeal: "What to do if you're turned down",
@@ -2666,6 +2763,11 @@ function vf({ onStart: e, onPersona: t, review: n, onBrowse: w }) {
           a.jsx("p", {
             className: "muted",
             children: "Free. Nothing you enter is saved.",
+          }),
+          a.jsx(Zo, {
+            on: n,
+            children:
+              "Prototype 0.8 (Laurie's Nov 16 feedback): (1) Work & Employment now has subsections for Workplace rights and responsibilities, Medical documentation, Leave and job protection, and Finding or changing work. (2) Income & Disability Supports now has Understanding your options, Federal supports, Provincial & territorial supports, Applying & navigating supports, and Disability savings. Subsections show as headings in the results and as links under each topic in the left menu. (3) New About this tool page (button in the header and footer) with the three organizations and space for the people behind the tool. (4) New Videos section in the left menu, ready for Lucy's videos and grouped by topic. To add one, put it in NAV.videos with its topic, title and link. (5) Everyday Costs & Local Help is unchanged for Lucy, and Appeals & Complaints stays in the menu.",
           }),
           a.jsx(Zo, {
             on: n,
@@ -3478,6 +3580,7 @@ function xf({
   review: o,
   fit: F,
   compact: CP,
+  hl: HL,
 }) {
   const l = b.useRef(null),
     s = tt(e.title, t, n),
@@ -3512,7 +3615,7 @@ function xf({
         a.jsxs("div", {
           className: "top",
           children: [
-            a.jsx("h4", { id: "st-" + r, children: s }),
+            a.jsx(HL || "h4", { id: "st-" + r, className: "ct", children: s }),
             x &&
               a.jsxs("p", {
                 className: "status " + x[0],
@@ -3568,7 +3671,7 @@ function xf({
                                 k &&
                                   a.jsxs(a.Fragment, {
                                     children: [
-                                      a.jsx("h5", {
+                                      a.jsx(HL ? "h6" : "h5", {
                                         children: "Who can get it",
                                       }),
                                       a.jsx("ul", {
@@ -3581,7 +3684,7 @@ function xf({
                                 g &&
                                   a.jsxs(a.Fragment, {
                                     children: [
-                                      a.jsx("h5", { children: "Details" }),
+                                      a.jsx(HL ? "h6" : "h5", { children: "Details" }),
                                       a.jsx("p", { children: g }),
                                     ],
                                   }),
@@ -3675,7 +3778,7 @@ function xf({
                         k &&
                           a.jsxs(a.Fragment, {
                             children: [
-                              a.jsx("h5", { children: "Who can get it" }),
+                              a.jsx(HL ? "h6" : "h5", { children: "Who can get it" }),
                               a.jsx("ul", {
                                 children: k.crit.map((D) =>
                                   a.jsx("li", { children: D }, D),
@@ -3686,7 +3789,7 @@ function xf({
                         g &&
                           a.jsxs(a.Fragment, {
                             children: [
-                              a.jsx("h5", { children: "Details" }),
+                              a.jsx(HL ? "h6" : "h5", { children: "Details" }),
                               a.jsx("p", { children: g }),
                             ],
                           }),
@@ -3931,15 +4034,55 @@ function Pf({
             color: Cc(m.id),
             stops: s.filter((C) => C.level === m.id),
           }))
-        : $e.lines.map((m) => ({
-            id: m.id,
-            name: m.name,
-            desc: "",
-            color: null,
-            stops: s.filter((C) => C.line === m.id),
-          }))
+        : $e.lines.map((m) => {
+            const ST = s.filter((C) => C.line === m.id),
+              PT = m.subs
+                ? m.subs
+                    .map((x) => ({
+                      id: x.id,
+                      name: x.name,
+                      stops: ST.filter((C) => C.sub === x.id),
+                    }))
+                    .concat([
+                      {
+                        id: "more",
+                        name: "",
+                        stops: ST.filter(
+                          (C) => !m.subs.some((x) => x.id === C.sub),
+                        ),
+                      },
+                    ])
+                    .filter((x) => x.stops.length)
+                : null;
+            return {
+              id: m.id,
+              name: m.name,
+              desc: "",
+              color: null,
+              parts: PT,
+              stops: PT ? PT.reduce((q, x) => q.concat(x.stops), []) : ST,
+            };
+          })
     ).filter((m) => m.stops.length || (d === "level" && m.id === "municipal"));
   let c = 0;
+  const nvCard = (C, H) => {
+    const N = c++;
+    return a.jsx(
+      xf,
+      {
+        s: C,
+        a: r,
+        c: l,
+        idx: N,
+        showLevel: !1,
+        review: n,
+        fit: SA && hA && fitS.includes(C),
+        compact: !0,
+        hl: H,
+      },
+      (C.id || "s") + N,
+    );
+  };
   function p() {
     const m = window.location.href.split("#")[0] + nvHash(r, SA);
     try {
@@ -3956,7 +4099,7 @@ function Pf({
       if (C) {
         C.tagName === "DETAILS" && (C.open = !0);
         C.scrollIntoView({ behavior: nvMotion() });
-        const N = C.querySelector("h2, h3");
+        const N = C.querySelector("h2, h3, h4");
         N && (N.setAttribute("tabindex", "-1"), N.focus({ preventScroll: !0 }));
       }
     },
@@ -4133,21 +4276,56 @@ function Pf({
                     a.jsx(
                       "li",
                       {
-                        children: a.jsxs("a", {
-                          href: "#g-" + m.id,
-                          onClick: P("g-" + m.id),
-                          children: [
-                            a.jsx("span", { children: m.name }),
-                            a.jsx("span", {
-                              className: "n",
-                              children: m.stops.length,
+                        children: [
+                          a.jsxs("a", {
+                            href: "#g-" + m.id,
+                            onClick: P("g-" + m.id),
+                            children: [
+                              a.jsx("span", { children: m.name }),
+                              a.jsx("span", {
+                                className: "n",
+                                children: m.stops.length,
+                              }),
+                            ],
+                          }),
+                          m.parts &&
+                            m.parts.some((x) => x.name) &&
+                            a.jsx("ul", {
+                              className: "toc-sub",
+                              children: m.parts
+                                .filter((x) => x.name)
+                                .map((x) =>
+                                  a.jsx(
+                                    "li",
+                                    {
+                                      children: a.jsxs("a", {
+                                        href: "#g-" + m.id + "-" + x.id,
+                                        onClick: P("g-" + m.id + "-" + x.id),
+                                        children: [
+                                          a.jsx("span", { children: x.name }),
+                                          a.jsx("span", {
+                                            className: "n",
+                                            children: x.stops.length,
+                                          }),
+                                        ],
+                                      }),
+                                    },
+                                    x.id,
+                                  ),
+                                ),
                             }),
-                          ],
-                        }),
+                        ],
                       },
                       m.id,
                     ),
                   ),
+                  a.jsx("li", {
+                    children: a.jsx("a", {
+                      href: "#videos",
+                      onClick: P("videos"),
+                      children: a.jsx("span", { children: "Videos" }),
+                    }),
+                  }),
                   a.jsx("li", {
                     children: a.jsx("a", {
                       href: "#free-help",
@@ -4232,7 +4410,7 @@ function Pf({
                         value: "",
                         children: "Choose a section",
                       }),
-                      f.map((m) =>
+                      f.map((m) => [
                         a.jsxs(
                           "option",
                           {
@@ -4241,7 +4419,29 @@ function Pf({
                           },
                           m.id,
                         ),
-                      ),
+                        ...(m.parts || [])
+                          .filter((x) => x.name)
+                          .map((x) =>
+                            a.jsxs(
+                              "option",
+                              {
+                                value: "g-" + m.id + "-" + x.id,
+                                children: [
+                                  "- ",
+                                  x.name,
+                                  " (",
+                                  x.stops.length,
+                                  ")",
+                                ],
+                              },
+                              m.id + "-" + x.id,
+                            ),
+                          ),
+                      ]),
+                      a.jsx("option", {
+                        value: "videos",
+                        children: "Videos",
+                      }),
                       a.jsx("option", {
                         value: "free-help",
                         children: "Free help near you",
@@ -4288,26 +4488,38 @@ function Pf({
                           m.desc && a.jsx("p", { children: m.desc }),
                         ],
                       }),
-                      m.stops.length
+                      m.stops.length && m.parts
+                        ? m.parts.map((x) =>
+                            a.jsxs(
+                              "div",
+                              {
+                                id: "g-" + m.id + "-" + x.id,
+                                className: "subgrp",
+                                "aria-labelledby": x.name
+                                  ? "gh-" + m.id + "-" + x.id
+                                  : void 0,
+                                children: [
+                                  x.name &&
+                                    a.jsx("h4", {
+                                      id: "gh-" + m.id + "-" + x.id,
+                                      className: "sub-h",
+                                      children: x.name,
+                                    }),
+                                  a.jsx("ul", {
+                                    className: "cards",
+                                    children: x.stops.map((C) =>
+                                      nvCard(C, x.name ? "h5" : void 0),
+                                    ),
+                                  }),
+                                ],
+                              },
+                              x.id,
+                            ),
+                          )
+                        : m.stops.length
                         ? a.jsx("ul", {
                             className: "cards",
-                            children: m.stops.map((C) => {
-                              const N = c++;
-                              return a.jsx(
-                                xf,
-                                {
-                                  s: C,
-                                  a: r,
-                                  c: l,
-                                  idx: N,
-                                  showLevel: !1,
-                                  review: n,
-                                  fit: SA && hA && fitS.includes(C),
-                                  compact: !0,
-                                },
-                                (C.id || "s") + N,
-                              );
-                            }),
+                            children: m.stops.map((C) => nvCard(C)),
                           })
                         : a.jsxs("div", {
                             className: "empty",
@@ -4341,6 +4553,7 @@ function Pf({
                   m.id,
                 ),
               ),
+              a.jsx(NvVideos, {}),
             ],
           }),
         ],
@@ -4496,6 +4709,178 @@ function nvHash(r, all) {
         "~" +
         encodeURIComponent(r.city || "");
 }
+function NvVideos() {
+  const V = $e.videos || [],
+    T = $e.lines
+      .map((L) => ({ ...L, vids: V.filter((v) => v.topic === L.id) }))
+      .filter((L) => L.vids.length);
+  return a.jsxs("section", {
+    id: "videos",
+    className: "grp vids",
+    "aria-labelledby": "gh-videos",
+    children: [
+      a.jsxs("header", {
+        children: [
+          a.jsx("h3", { id: "gh-videos", children: "Videos" }),
+          a.jsx("p", {
+            children: "Short videos that walk through these topics.",
+          }),
+        ],
+      }),
+      T.length
+        ? T.map((L) =>
+            a.jsxs(
+              "div",
+              {
+                className: "subgrp",
+                children: [
+                  a.jsx("h4", { className: "sub-h", children: L.name }),
+                  a.jsx("ul", {
+                    className: "vlist",
+                    children: L.vids.map((v) =>
+                      a.jsx(
+                        "li",
+                        {
+                          children: a.jsxs("a", {
+                            className: "btn btn-secondary",
+                            href: v.url,
+                            target: "_blank",
+                            rel: "noopener",
+                            children: [
+                              v.title,
+                              v.length ? " (" + v.length + ")" : "",
+                              B(Sc),
+                              a.jsx("span", {
+                                className: "sr-only",
+                                children: " (opens in a new tab)",
+                              }),
+                            ],
+                          }),
+                        },
+                        v.url,
+                      ),
+                    ),
+                  }),
+                ],
+              },
+              L.id,
+            ),
+          )
+        : a.jsxs("div", {
+            className: "empty",
+            children: [
+              a.jsx("b", { children: "Videos are coming soon" }),
+              a.jsx("p", {
+                className: "muted",
+                style: { marginTop: ".35rem" },
+                children:
+                  "We're making short videos on work, income and medication supports. They'll appear here, grouped by topic.",
+              }),
+            ],
+          }),
+    ],
+  });
+}
+function NvAbout({ onBack: e, review: n }) {
+  const O = [
+    [
+      "Psoriasis Canada (PsoCan)",
+      "A registered charity that offers community, resources and support for people affected by psoriatic disease.",
+    ],
+    [
+      "Canadian Arthritis Patient Alliance (CAPA)",
+      "A national, patient-led organization run by and for people living with arthritis.",
+    ],
+    [
+      "Unmasking Psoriasis",
+      "A patient group for people living with psoriasis.",
+    ],
+  ];
+  return a.jsxs("div", {
+    className: "wrap about",
+    children: [
+      a.jsx("h1", { children: "About this tool" }),
+      a.jsx("p", {
+        className: "lede",
+        children:
+          "The Supports Navigator helps people in Canada living with arthritis or psoriatic disease find money, work and medication supports. It's part of Working it Out.",
+      }),
+      a.jsx(Zo, {
+        on: n,
+        children:
+          "Laurie's Nov 16 feedback: organization descriptions are drafts for each group to confirm or replace. Names for the people with lived experience and the project team will be added once they're final.",
+      }),
+      a.jsxs("section", {
+        "aria-labelledby": "ab-org",
+        children: [
+          a.jsx("h2", { id: "ab-org", children: "Who made it" }),
+          a.jsx("ul", {
+            className: "ab-list",
+            children: O.map(([t, d]) =>
+              a.jsxs(
+                "li",
+                {
+                  children: [
+                    a.jsx("h3", { children: t }),
+                    a.jsx("p", { children: d }),
+                  ],
+                },
+                t,
+              ),
+            ),
+          }),
+        ],
+      }),
+      a.jsxs("section", {
+        "aria-labelledby": "ab-ppl",
+        children: [
+          a.jsx("h2", { id: "ab-ppl", children: "The people behind it" }),
+          a.jsxs("ul", {
+            className: "ab-list",
+            children: [
+              a.jsxs("li", {
+                children: [
+                  a.jsx("h3", { children: "People with lived experience" }),
+                  a.jsx("p", {
+                    children:
+                      "People living with arthritis and psoriatic disease are helping shape this tool.",
+                  }),
+                  a.jsx("p", { className: "muted", children: "Names to come." }),
+                ],
+              }),
+              a.jsxs("li", {
+                children: [
+                  a.jsx("h3", { children: "Project team" }),
+                  a.jsx("p", { className: "muted", children: "Names to come." }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      }),
+      a.jsxs("section", {
+        "aria-labelledby": "ab-acc",
+        children: [
+          a.jsx("h2", { id: "ab-acc", children: "Keeping it accurate" }),
+          a.jsx("p", {
+            children:
+              "Program details were last checked in October 2026. Program rules change, so check with the program before you apply.",
+          }),
+          a.jsx("p", {
+            children:
+              "This tool is free. Nothing you enter is saved or sent anywhere.",
+          }),
+        ],
+      }),
+      a.jsxs("button", {
+        type: "button",
+        className: "btn btn-secondary",
+        onClick: e,
+        children: "Go back",
+      }),
+    ],
+  });
+}
 function Nf() {
   const e = b.useMemo(hf, []),
     e2 = b.useMemo(hfAll, []),
@@ -4510,7 +4895,11 @@ function Nf() {
     [y, h] = b.useState(Ef),
     k = mf(),
     S = b.useRef(null),
-    x = b.useRef(null);
+    x = b.useRef(null),
+    pv = b.useRef("intro"),
+    goAbout = () => {
+      (t !== "about" && (pv.current = t), n("about"), window.scrollTo(0, 0));
+    };
   (b.useEffect(() => {
     const p = document.documentElement;
     (p.classList.toggle("size-1", y.size === 1),
@@ -4589,6 +4978,13 @@ function Nf() {
             a.jsxs("div", {
               className: "tools",
               children: [
+                a.jsx("button", {
+                  type: "button",
+                  className: "btn btn-secondary",
+                  "aria-current": t === "about" ? "page" : void 0,
+                  onClick: goAbout,
+                  children: "About this tool",
+                }),
                 a.jsxs("fieldset", {
                   className: "sizes",
                   children: [
@@ -4673,6 +5069,13 @@ function Nf() {
                 (sMd("fit"), n("results"), window.scrollTo(0, 0));
               },
             }),
+          t === "about" &&
+            a.jsx(NvAbout, {
+              review: d,
+              onBack: () => {
+                (n(pv.current), window.scrollTo(0, 0));
+              },
+            }),
           t === "results" &&
             a.jsx(Pf, {
               answers: r,
@@ -4690,8 +5093,18 @@ function Nf() {
         className: "site-f",
         children: a.jsx("div", {
           className: "wrap",
-          children:
-            "Working it Out, a project of Psoriasis Canada and the Canadian Arthritis Patient Alliance..",
+          children: [
+            a.jsx("p", {
+              children:
+                "Working it Out, a project of Psoriasis Canada, Unmasking Psoriasis and the Canadian Arthritis Patient Alliance.",
+            }),
+            a.jsx("button", {
+              type: "button",
+              className: "linkbtn",
+              onClick: goAbout,
+              children: "About this tool",
+            }),
+          ],
         }),
       }),
     ],
@@ -4841,7 +5254,7 @@ html:not(.dark):not(.hc) .firstpanel li:before{background:var(--brand-text)}
 .xtra .cl li label:has(:checked){background:var(--brand-tint);border-color:var(--brand)}
 .xtra .cl li label:has(:focus-visible){outline:3px solid var(--focus);outline-offset:2px}
 .xtra .cl li label{max-width:none}
-</style>
+.subgrp{margin-top:1.75rem;scroll-margin-top:1rem}.grp>.subgrp:first-of-type{margin-top:1.25rem}.sub-h{color:var(--ink);font-size:1.2rem;padding-bottom:.4rem;border-bottom:1px solid var(--line)}.subgrp>.cards{margin-top:1rem}.card .ct{max-width:32ch;font-size:1.3rem;overflow-wrap:break-word}details.more h6{font-family:var(--f-head);color:var(--ink);font-weight:600;margin:.5rem 0 .35rem;font-size:1.05rem;line-height:1.25}.toc-sub{margin:.1rem 0 .35rem .75rem!important;padding-left:.5rem!important;border-left:2px solid var(--line);gap:0!important}.toc .toc-sub a{font-weight:400;min-height:2.5rem;padding:.4rem .6rem;font-size:.95em}.vlist{gap:.75rem;margin:1rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap}.vids .empty{margin-top:1.25rem}.about{padding-top:3rem;padding-bottom:3rem;max-width:56rem}.about h1{font-size:clamp(2rem,5vw,2.75rem)}.about .lede{margin-top:1rem;max-width:62ch}.about section{margin-top:2.5rem}.about h2{font-size:1.5rem}.ab-list{gap:1rem;margin:1rem 0 0;padding:0;list-style:none;display:grid}.ab-list li{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.25rem 1.4rem}.ab-list h3{font-size:1.15rem}.ab-list p{margin-top:.35rem;max-width:62ch}.about section p{max-width:62ch}.about section>p{margin-top:.75rem}.about>.btn{margin-top:2.5rem}.site-f .wrap{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;align-items:center;justify-content:space-between}.site-f p{margin:0}.linkbtn{background:none;border:0;padding:.5rem 0;min-height:2.75rem;font:inherit;color:var(--link,var(--brand));text-decoration:underline;cursor:pointer}.linkbtn:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.tools [aria-current=page]{border-color:var(--brand);background:var(--brand-tint)}</style>
 <div id="root"></div>
 
 </body></html>

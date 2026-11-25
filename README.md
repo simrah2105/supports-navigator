@@ -6,6 +6,14 @@ People can either answer 5 short questions to get a list that fits them, or brow
 
 Part of **Working it Out**, a project of Psoriasis Canada, Unmasking Psoriasis and the Canadian Arthritis Patient Alliance (CAPA).
 
+## What's in it
+
+- Five topics: Work & Employment, Income & Disability Supports, Medication & Health-Related Costs, Everyday Costs & Local Help, and Appeals & Complaints
+- Work & Employment and Income & Disability Supports are split into subsections that follow the Working it Out information architecture
+- An About this tool page (header and footer) and a Videos section (left menu)
+
+To add a video, add an entry to `NAV.videos` in `index.html`, for example `{ topic: "work", title: "Asking for accommodations", url: "https://...", length: "3 min" }`. The topic is the id of one of the five topics (`work`, `income`, `meds`, `other`, `appeal`).
+
 ## How to use it
 
 Open `index.html` in any web browser. Everything is in that one file, and nothing anyone enters is saved or sent anywhere.
