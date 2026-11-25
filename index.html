@@ -4781,104 +4781,98 @@ function NvVideos() {
     ],
   });
 }
-function NvAbout({ onBack: e, review: n }) {
-  const O = [
-    [
-      "Psoriasis Canada (PsoCan)",
-      "A registered charity that offers community, resources and support for people affected by psoriatic disease.",
-    ],
-    [
-      "Canadian Arthritis Patient Alliance (CAPA)",
-      "A national, patient-led organization run by and for people living with arthritis.",
-    ],
-    [
-      "Unmasking Psoriasis",
-      "A patient group for people living with psoriasis.",
-    ],
-  ];
-  return a.jsxs("div", {
-    className: "wrap about",
-    children: [
-      a.jsx("h1", { children: "About this tool" }),
-      a.jsx("p", {
-        className: "lede",
-        children:
-          "The Supports Navigator helps people in Canada living with arthritis or psoriatic disease find money, work and medication supports. It's part of Working it Out.",
-      }),
-      a.jsx(Zo, {
-        on: n,
-        children:
-          "Laurie's Nov 16 feedback: organization descriptions are drafts for each group to confirm or replace. Names for the people with lived experience and the project team will be added once they're final.",
-      }),
-      a.jsxs("section", {
-        "aria-labelledby": "ab-org",
-        children: [
-          a.jsx("h2", { id: "ab-org", children: "Who made it" }),
-          a.jsx("ul", {
-            className: "ab-list",
-            children: O.map(([t, d]) =>
-              a.jsxs(
-                "li",
-                {
-                  children: [
-                    a.jsx("h3", { children: t }),
-                    a.jsx("p", { children: d }),
-                  ],
-                },
-                t,
-              ),
-            ),
-          }),
-        ],
-      }),
-      a.jsxs("section", {
-        "aria-labelledby": "ab-ppl",
-        children: [
-          a.jsx("h2", { id: "ab-ppl", children: "The people behind it" }),
-          a.jsxs("ul", {
-            className: "ab-list",
-            children: [
-              a.jsxs("li", {
-                children: [
-                  a.jsx("h3", { children: "People with lived experience" }),
-                  a.jsx("p", {
-                    children:
-                      "People living with arthritis and psoriatic disease are helping shape this tool.",
-                  }),
-                  a.jsx("p", { className: "muted", children: "Names to come." }),
-                ],
-              }),
-              a.jsxs("li", {
-                children: [
-                  a.jsx("h3", { children: "Project team" }),
-                  a.jsx("p", { className: "muted", children: "Names to come." }),
-                ],
-              }),
-            ],
-          }),
-        ],
-      }),
-      a.jsxs("section", {
-        "aria-labelledby": "ab-acc",
-        children: [
-          a.jsx("h2", { id: "ab-acc", children: "Keeping it accurate" }),
-          a.jsx("p", {
-            children:
-              "Program details were last checked in October 2026. Program rules change, so check with the program before you apply.",
-          }),
-          a.jsx("p", {
-            children:
-              "This tool is free. Nothing you enter is saved or sent anywhere.",
-          }),
-        ],
-      }),
-      a.jsxs("button", {
-        type: "button",
-        className: "btn btn-secondary",
-        onClick: e,
-        children: "Go back",
-      }),
-    ],
+function NvAbout({ open: o, onClose: e, review: n }) {
+  const d = b.useRef(null);
+  b.useEffect(() => {
+    const el = d.current;
+    if (!el) return;
+    if (o && !el.open) {
+      try {
+        el.showModal();
+      } catch {
+        el.setAttribute("open", "");
+      }
+    } else if (!o && el.open) el.close();
+  }, [o]);
+  b.useEffect(() => {
+    const el = d.current;
+    if (!el) return;
+    const h = () => e();
+    return (
+      el.addEventListener("close", h),
+      () => el.removeEventListener("close", h)
+    );
+  }, [e]);
+  return a.jsx("dialog", {
+    ref: d,
+    className: "about-dlg",
+    "aria-labelledby": "ab-h",
+    onClick: (v) => {
+      v.target === d.current && e();
+    },
+    children: a.jsxs("div", {
+      className: "dlg-in",
+      children: [
+        a.jsxs("div", {
+          className: "dlg-hd",
+          children: [
+            a.jsx("h2", { id: "ab-h", children: "About this tool" }),
+            a.jsx("button", {
+              type: "button",
+              className: "dlg-x",
+              "aria-label": "Close",
+              onClick: e,
+              children: B(pf),
+            }),
+          ],
+        }),
+        a.jsx("p", {
+          children:
+            "The Supports Navigator helps people in Canada living with arthritis or psoriatic disease find money, work and medication supports. It's part of Working it Out.",
+        }),
+        a.jsx(Zo, {
+          on: n,
+          children:
+            "Organization descriptions are drafts for each group to confirm. Names will be added once they're final.",
+        }),
+        a.jsx("h3", { children: "Who made it" }),
+        a.jsxs("ul", {
+          className: "ab-orgs",
+          children: [
+            a.jsxs("li", {
+              children: [
+                a.jsx("b", { children: "Psoriasis Canada (PsoCan)" }),
+                " is a registered charity that offers community, resources and support for people affected by psoriatic disease.",
+              ],
+            }),
+            a.jsxs("li", {
+              children: [
+                a.jsx("b", {
+                  children: "Canadian Arthritis Patient Alliance (CAPA)",
+                }),
+                " is a national, patient-led organization run by and for people living with arthritis.",
+              ],
+            }),
+            a.jsxs("li", {
+              children: [
+                a.jsx("b", { children: "Unmasking Psoriasis" }),
+                " is a patient group for people living with psoriasis.",
+              ],
+            }),
+          ],
+        }),
+        a.jsx("h3", { children: "The people behind it" }),
+        a.jsx("p", {
+          children:
+            "People living with arthritis and psoriatic disease are helping shape this tool, along with the project team. Names to come.",
+        }),
+        a.jsx("p", {
+          className: "fine",
+          children:
+            "Program details were last checked in October 2026. Rules change, so check with the program before you apply. Nothing you enter is saved.",
+        }),
+      ],
+    }),
   });
 }
 function Nf() {
@@ -4896,10 +4890,9 @@ function Nf() {
     k = mf(),
     S = b.useRef(null),
     x = b.useRef(null),
-    pv = b.useRef("intro"),
-    goAbout = () => {
-      (t !== "about" && (pv.current = t), n("about"), window.scrollTo(0, 0));
-    };
+    [ab, sAb] = b.useState(!1),
+    goAbout = () => sAb(!0),
+    closeAbout = b.useCallback(() => sAb(!1), []);
   (b.useEffect(() => {
     const p = document.documentElement;
     (p.classList.toggle("size-1", y.size === 1),
@@ -4981,7 +4974,7 @@ function Nf() {
                 a.jsx("button", {
                   type: "button",
                   className: "btn btn-secondary",
-                  "aria-current": t === "about" ? "page" : void 0,
+                  "aria-haspopup": "dialog",
                   onClick: goAbout,
                   children: "About this tool",
                 }),
@@ -5069,13 +5062,6 @@ function Nf() {
                 (sMd("fit"), n("results"), window.scrollTo(0, 0));
               },
             }),
-          t === "about" &&
-            a.jsx(NvAbout, {
-              review: d,
-              onBack: () => {
-                (n(pv.current), window.scrollTo(0, 0));
-              },
-            }),
           t === "results" &&
             a.jsx(Pf, {
               answers: r,
@@ -5101,12 +5087,14 @@ function Nf() {
             a.jsx("button", {
               type: "button",
               className: "linkbtn",
+              "aria-haspopup": "dialog",
               onClick: goAbout,
               children: "About this tool",
             }),
           ],
         }),
       }),
+      a.jsx(NvAbout, { open: ab, onClose: closeAbout, review: d }),
     ],
   });
 }
@@ -5254,7 +5242,7 @@ html:not(.dark):not(.hc) .firstpanel li:before{background:var(--brand-text)}
 .xtra .cl li label:has(:checked){background:var(--brand-tint);border-color:var(--brand)}
 .xtra .cl li label:has(:focus-visible){outline:3px solid var(--focus);outline-offset:2px}
 .xtra .cl li label{max-width:none}
-.subgrp{margin-top:1.75rem;scroll-margin-top:1rem}.grp>.subgrp:first-of-type{margin-top:1.25rem}.sub-h{color:var(--ink);font-size:1.2rem;padding-bottom:.4rem;border-bottom:1px solid var(--line)}.subgrp>.cards{margin-top:1rem}.card .ct{max-width:32ch;font-size:1.3rem;overflow-wrap:break-word}details.more h6{font-family:var(--f-head);color:var(--ink);font-weight:600;margin:.5rem 0 .35rem;font-size:1.05rem;line-height:1.25}.toc-sub{margin:.1rem 0 .35rem .75rem!important;padding-left:.5rem!important;border-left:2px solid var(--line);gap:0!important}.toc .toc-sub a{font-weight:400;min-height:2.5rem;padding:.4rem .6rem;font-size:.95em}.vlist{gap:.75rem;margin:1rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap}.vids .empty{margin-top:1.25rem}.about{padding-top:3rem;padding-bottom:3rem;max-width:56rem}.about h1{font-size:clamp(2rem,5vw,2.75rem)}.about .lede{margin-top:1rem;max-width:62ch}.about section{margin-top:2.5rem}.about h2{font-size:1.5rem}.ab-list{gap:1rem;margin:1rem 0 0;padding:0;list-style:none;display:grid}.ab-list li{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.25rem 1.4rem}.ab-list h3{font-size:1.15rem}.ab-list p{margin-top:.35rem;max-width:62ch}.about section p{max-width:62ch}.about section>p{margin-top:.75rem}.about>.btn{margin-top:2.5rem}.site-f .wrap{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;align-items:center;justify-content:space-between}.site-f p{margin:0}.linkbtn{background:none;border:0;padding:.5rem 0;min-height:2.75rem;font:inherit;color:var(--link,var(--brand));text-decoration:underline;cursor:pointer}.linkbtn:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.tools [aria-current=page]{border-color:var(--brand);background:var(--brand-tint)}</style>
+.subgrp{margin-top:1.75rem;scroll-margin-top:1rem}.grp>.subgrp:first-of-type{margin-top:1.25rem}.sub-h{color:var(--ink);font-size:1.2rem;padding-bottom:.4rem;border-bottom:1px solid var(--line)}.subgrp>.cards{margin-top:1rem}.card .ct{max-width:32ch;font-size:1.3rem;overflow-wrap:break-word}details.more h6{font-family:var(--f-head);color:var(--ink);font-weight:600;margin:.5rem 0 .35rem;font-size:1.05rem;line-height:1.25}.toc-sub{margin:.1rem 0 .35rem .75rem!important;padding-left:.5rem!important;border-left:2px solid var(--line);gap:0!important}.toc .toc-sub a{font-weight:400;min-height:2.5rem;padding:.4rem .6rem;font-size:.95em}.vlist{gap:.75rem;margin:1rem 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap}.vids .empty{margin-top:1.25rem}.site-f .wrap{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;align-items:center;justify-content:space-between}.site-f p{margin:0}.linkbtn{background:none;border:0;padding:.5rem 0;min-height:2.75rem;font:inherit;color:var(--link,var(--brand));text-decoration:underline;cursor:pointer}.linkbtn:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.about-dlg{border:0;padding:0;margin:auto;border-radius:var(--r-lg);background:var(--surface);color:var(--ink);width:min(38rem,calc(100% - 2rem));max-height:calc(100dvh - 2rem);overflow:auto;box-shadow:0 24px 64px rgba(20,10,35,.28)}.about-dlg::backdrop{background:rgba(25,15,40,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}.hc .about-dlg{border:2px solid var(--ink)}.dlg-in{padding:1.5rem 1.4rem 1.6rem}@media (min-width:640px){.dlg-in{padding:1.9rem 2.2rem 2.1rem}}.dlg-hd{display:flex;justify-content:space-between;align-items:center;gap:1rem}.dlg-hd h2{font-size:1.5rem}.dlg-x{flex:none;display:grid;place-items:center;width:2.75rem;height:2.75rem;border:1px solid var(--line-strong);border-radius:50%;background:var(--surface);color:var(--ink);cursor:pointer}.dlg-x:hover{background:var(--surface-2)}.dlg-x:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.dlg-x .ic{width:1.25rem;height:1.25rem}.about-dlg p{margin:.75rem 0 0;max-width:62ch}.about-dlg h3{font-size:1.1rem;margin-top:1.5rem}.ab-orgs{margin:.5rem 0 0;padding:0;list-style:none;max-width:62ch}.ab-orgs li{margin-top:.6rem}.about-dlg .fine{margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--ink-2);font-size:.95rem}html:has(.about-dlg[open]){overflow:hidden}@media (prefers-reduced-motion:no-preference){.about-dlg[open]{animation:dlgin .18s ease-out}}@keyframes dlgin{from{opacity:0;transform:translateY(8px)}}</style>
 <div id="root"></div>
 
 </body></html>
